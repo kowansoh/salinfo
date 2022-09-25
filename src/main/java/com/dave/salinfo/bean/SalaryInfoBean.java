@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SalaryInfoBean {
-    private String name;
-    private double salary;
+  private String name;
+  private float salary;
 }

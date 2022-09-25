@@ -1,4 +1,4 @@
-package com.dave.salinfo.ExceptionHandler;
+package com.dave.salinfo.exceptionhandler;
 
 import com.dave.salinfo.bean.SalaryResponseBean;
 import com.sun.jdi.InvalidTypeException;
@@ -14,14 +14,20 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
       value = {
         IllegalArgumentException.class,
         IllegalStateException.class,
-        InvalidTypeException.class
+        InvalidTypeException.class,
+        NumberFormatException.class
       })
-  protected ResponseEntity<SalaryResponseBean> handleConflict(Exception ex) {
+  protected ResponseEntity<SalaryResponseBean> handleBadRequest(Exception ex) {
     return ResponseEntity.badRequest().body(new SalaryResponseBean(0, ex.getMessage()));
   }
 
   @ExceptionHandler(value = {NullPointerException.class})
   protected ResponseEntity<SalaryResponseBean> handleNull(Exception ex) {
     return ResponseEntity.badRequest().body(new SalaryResponseBean(0, ex.getMessage()));
+  }
+
+  @ExceptionHandler(value = {Exception.class})
+  protected ResponseEntity<SalaryResponseBean> handleRestOfExceptions(Exception ex) {
+    return ResponseEntity.internalServerError().body(new SalaryResponseBean(0, ex.getMessage()));
   }
 }

@@ -6,6 +6,7 @@ import com.dave.salinfo.bean.SalaryResponseBean;
 import com.dave.salinfo.factory.FileProcessingFactory;
 import com.dave.salinfo.service.SalaryInfoService;
 import com.sun.jdi.InvalidTypeException;
+import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,8 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.Objects;
 
 @RestController
 public class SalaryController {
@@ -27,8 +26,10 @@ public class SalaryController {
       @RequestParam(defaultValue = "4000.0") float max,
       @RequestParam(defaultValue = "0") int offset,
       @RequestParam(required = false) Integer limit,
-      @RequestParam(defaultValue = "name") String sort) {
-    return ResponseEntity.ok().body(salaryInfoService.getSalaryInfo());
+      @RequestParam(required = false) String sort) {
+    SalaryListBean response = salaryInfoService.getSalaryInfo(min, max, offset, limit, sort);
+
+    return ResponseEntity.ok().body(response);
   }
 
   @PostMapping("/upload")
