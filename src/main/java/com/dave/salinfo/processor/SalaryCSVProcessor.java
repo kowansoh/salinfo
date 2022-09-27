@@ -37,8 +37,9 @@ public class SalaryCSVProcessor implements SalaryFileProcessor {
                   salaryInfos.add(salaryInfo);
                 }
               });
-
-      salaryRepository.saveAll(salaryInfos);
+      if (!salaryInfos.isEmpty()) {
+        salaryRepository.saveAll(salaryInfos);
+      }
     } catch (IOException e) {
       throw new IllegalStateException("fail to parse csv data: " + e.getMessage());
     }

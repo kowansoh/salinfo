@@ -22,12 +22,11 @@ public class SalaryInfoRepositoryImpl {
     CriteriaBuilder cb = entityManager.getCriteriaBuilder();
     CriteriaQuery<SalaryInfoBean> query = cb.createQuery(SalaryInfoBean.class);
     Root<SalaryInfo> root = query.from(SalaryInfo.class);
-    var criteriaBuilder = entityManager.getCriteriaBuilder();
     query
         .select(cb.construct(SalaryInfoBean.class, root.get("name"), root.get("salary")))
         .where(cb.between(root.get("salary"), min, max));
     if (!(Objects.isNull(sort) || sort.isEmpty())) {
-      query.orderBy(criteriaBuilder.asc(root.get(sort.toLowerCase(Locale.ROOT))));
+      query.orderBy(cb.asc(root.get(sort.toLowerCase(Locale.ROOT))));
     }
 
     TypedQuery<SalaryInfoBean> queries = entityManager.createQuery(query);
