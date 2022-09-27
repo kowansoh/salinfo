@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
-import org.apache.commons.csv.CSVRecord;
 
 public class CsvUtils {
 
@@ -15,17 +14,11 @@ public class CsvUtils {
     throw new IllegalStateException("DO NOT INSTANTIATE!");
   }
 
-  public static Iterable<CSVRecord> readCsv(InputStream is, String... headers) {
-    try (BufferedReader fileReader =
-            new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
-        CSVParser csvParser =
-            new CSVParser(
-                fileReader, CSVFormat.DEFAULT.withSkipHeaderRecord().withHeader(headers))) {
+  public static CSVParser readCsv(InputStream is) throws IOException {
+    BufferedReader fileReader =
+        new BufferedReader(new InputStreamReader(is, StandardCharsets.UTF_8));
 
-      return csvParser.getRecords();
-
-    } catch (IOException e) {
-      throw new IllegalArgumentException("fail to parse CSV file : " + e.getMessage());
-    }
+    return CSVParser.parse(
+        fileReader, CSVFormat.DEFAULT.withSkipHeaderRecord().withFirstRecordAsHeader());
   }
 }
